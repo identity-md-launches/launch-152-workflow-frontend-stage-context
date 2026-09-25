@@ -1,0 +1,22 @@
+{
+  "kind": "evm_project",
+  "token": {
+    "contract": "CounterToken",
+    "name": "Counter Test",
+    "symbol": "CNTR",
+    "decimals": 18
+  },
+  "pool": {
+    "pairedCurrency": "0x0000000000000000000000000000000000000000",
+    "fee": 3000,
+    "tickSpacing": 60,
+    "initialPrice": "79228162514264337593543950336"
+  },
+  "contracts": [
+    {
+      "contract": "OwnableCounter",
+      "constructorArgs": ["$owner"]
+    }
+  ],
+  "notes": "OwnableCounter smoke-test launch for Sepolia (chainId 11155111), described exactly as implemented in the accepted tree. Token: CounterToken (src/CounterToken.sol), fixed-supply ERC-20 named Counter Test / CNTR with 18 decimals. Its zero-argument constructor mints the whole supply of 1000000000 tokens (10^27 minor units) once to msg.sender, which is ProjectFactory at launch, so the factory holds the full supply for its SupplyMismatch check and the policy split. The token has no owner, mint, burn, pause, blacklist, upgrade or initializer function and no receive/fallback. Application contracts: exactly one, OwnableCounter (src/OwnableCounter.sol). Its nonpayable constructor takes a single address parameter, initialOwner, filled here with $owner so the policy-defined project owner, not the immutable factory that is msg.sender during construction, controls the privileged functions. The constructor reverts on a zero owner. OwnableCounter does not reference the token or any other contract, holds no ETH (no receive/fallback, all functions nonpayable) and moves no token supply during construction. Privileged surface: owner may call reset() and transferOwnership(address); transferOwnership rejects the zero address and there is no renounceOwnership, so reset() cannot be permanently disabled. increment() and decrement() are permissionless; decrement() reverts at zero and increment() reverts at the uint256 maximum. Neither contract uses DELEGATECALL, CALLCODE, SELFDESTRUCT, proxies or upgradeability. No privileged wallet is named anywhere in this manifest. Pool: paired against native ETH (zero address) with fee 3000, tickSpacing 60 and no hook. initialPrice is the sqrtPriceX96 for a 1:1 opening (2^96); the deployer derives the effective opening price from the pinned Sepolia policy (v5 initialMarketCapWei, 20 ETH opening FDV) and uses the manifest price only under legacy policies. Supply, allocations, contributor lock, chainId, policyVersion and artifact hashes are owned by policy and the attestation/admission services, not by this file. The factory supplies the LP and MerkleDistributor. Verified locally with forge build and forge test (51 tests passing across CounterToken, OwnableCounter and LaunchFloor suites, the last mirroring the protocol floor with a CREATE2 factory as msg.sender for both constructors). ABI exports at docs/abi/CounterToken.json (no constructor inputs) and docs/abi/OwnableCounter.json (constructor input address initialOwner) match this manifest."
+}
