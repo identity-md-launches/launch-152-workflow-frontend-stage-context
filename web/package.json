@@ -1,0 +1,38 @@
+{
+  "name": "ownable-counter-web",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "postbuild": "node scripts/manifest.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc -b",
+    "test": "vitest run",
+    "e2e": "node scripts/e2e.mjs",
+    "verify": "node scripts/verify-export.mjs",
+    "check": "npm run typecheck && npm run test && npm run build && npm run verify"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.90.2",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "viem": "^2.56.9",
+    "wagmi": "^3.7.7"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.5.2",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.3",
+    "jsdom": "^27.0.0",
+    "playwright": "^1.63.0",
+    "typescript": "^5.9.2",
+    "vite": "^8.3.1",
+    "vitest": "^4.0.0"
+  }
+}

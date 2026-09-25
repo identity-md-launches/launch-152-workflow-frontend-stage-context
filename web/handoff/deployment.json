@@ -1,0 +1,51 @@
+{
+  "chainId": 11155111,
+  "repoUrl": "https://github.com/identity-md-launches/launch-148-workflow-contract-stage-context",
+  "version": 1,
+  "launchId": "bce7e9c8-af3a-45e2-9efb-c3109cf807c1",
+  "manifest": {
+    "kind": "evm_project",
+    "pool": {
+      "fee": 3000,
+      "tickSpacing": 60,
+      "initialPrice": "79228162514264337593543950336",
+      "pairedCurrency": "0x0000000000000000000000000000000000000000"
+    },
+    "notes": "OwnableCounter smoke-test launch for Sepolia (chainId 11155111), described exactly as implemented in the accepted tree. Token: CounterToken (src/CounterToken.sol), fixed-supply ERC-20 named Counter Test / CNTR with 18 decimals. Its zero-argument constructor mints the whole supply of 1000000000 tokens (10^27 minor units) once to msg.sender, which is ProjectFactory at launch, so the factory holds the full supply for its SupplyMismatch check and the policy split. The token has no owner, mint, burn, pause, blacklist, upgrade or initializer function and no receive/fallback. Application contracts: exactly one, OwnableCounter (src/OwnableCounter.sol). Its nonpayable constructor takes a single address parameter, initialOwner, filled here with $owner so the policy-defined project owner, not the immutable factory that is msg.sender during construction, controls the privileged functions. The constructor reverts on a zero owner. OwnableCounter does not reference the token or any other contract, holds no ETH (no receive/fallback, all functions nonpayable) and moves no token supply during construction. Privileged surface: owner may call reset() and transferOwnership(address); transferOwnership rejects the zero address and there is no renounceOwnership, so reset() cannot be permanently disabled. increment() and decrement() are permissionless; decrement() reverts at zero and increment() reverts at the uint256 maximum. Neither contract uses DELEGATECALL, CALLCODE, SELFDESTRUCT, proxies or upgradeability. No privileged wallet is named anywhere in this manifest. Pool: paired against native ETH (zero address) with fee 3000, tickSpacing 60 and no hook. initialPrice is the sqrtPriceX96 for a 1:1 opening (2^96); the deployer derives the effective opening price from the pinned Sepolia policy (v5 initialMarketCapWei, 20 ETH opening FDV) and uses the manifest price only under legacy policies. Supply, allocations, contributor lock, chainId, policyVersion and artifact hashes are owned by policy and the attestation/admission services, not by this file. The factory supplies the LP and MerkleDistributor. Verified locally with forge build and forge test (51 tests passing across CounterToken, OwnableCounter and LaunchFloor suites, the last mirroring the protocol floor with a CREATE2 factory as msg.sender for both constructors). ABI exports at docs/abi/CounterToken.json (no constructor inputs) and docs/abi/OwnableCounter.json (constructor input address initialOwner) match this manifest.",
+    "token": {
+      "name": "Counter Test",
+      "symbol": "CNTR",
+      "contract": "CounterToken",
+      "decimals": 18
+    },
+    "contracts": [
+      {
+        "contract": "OwnableCounter",
+        "constructorArgs": [
+          "$owner"
+        ]
+      }
+    ]
+  },
+  "contracts": [
+    {
+      "name": "CounterToken",
+      "txHash": "0xb87d9e83d691f7b8e65f05a13801e355d8085192375335b78c1b863211e4e92e",
+      "abiHash": "ae227fe1565a917610fe93e9f4f286569b30316a44643da2b4b2665f82a97c95",
+      "address": "0x6a823925da61c747395d134e6dea733cc6a4064b",
+      "blockNumber": 11777277,
+      "creationCodeHash": "f1bb6395a5af540856d0235ac310d5ed8e2c03017695a105fcc4836f7e8165fc"
+    },
+    {
+      "name": "OwnableCounter",
+      "txHash": "0xb87d9e83d691f7b8e65f05a13801e355d8085192375335b78c1b863211e4e92e",
+      "abiHash": "a46b156f0443509f72ef60097c087e177ea4d4719ffabb87fb2f7da159bef46e",
+      "address": "0x40450ca095fa04d25bd617315531fda14847a0de",
+      "blockNumber": 11777277,
+      "creationCodeHash": "aceace809ed981a8e9910025df7a579c83429b9362a3d6cbd65dceab2cd90e3b"
+    }
+  ],
+  "sourceCommit": "6f98400e6f048139093b3ffa812b7ad4f1be3490",
+  "abiInstructions": "Build ABIs from this exact source commit; compare canonicalKeccak(abi) with abiHash. Verify deployed code on the stated chain before enabling transactions.",
+  "attestationHash": "9110ba35ad675e1c03b11232358407ba158ca211b290d1e5e1a4ca39dc8ba6c7"
+}
